@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/index.css"/>
+		<style>
+		.nexttext { font-weight: bold; color: #002A5C; }
+		.textbox {width:100%;padding:1px;}
+		</style>
+		<script src="js/jquery-1.11.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			$(function(){
+				document.getElementById("button").onclick = nextButton;
+				function nextButton() {
+                    localStorage["postQ1"] = document.getElementById("postQ1").value;
+                    var radios = document.getElementsByName("postQ2");
+                    let q2 = "NA";
+					for (var i = 0, length = radios.length; i < length; i++) {
+						if (radios[i].checked) {
+							let q2 = radios[i].value;
+							break;
+						}
+					}
+                    localStorage["postQ2"] = q2;
+                    localStorage["postQ3"] = document.getElementById("postQ3").value;
+                    localStorage["postQ4"] = document.getElementById("postQ4").value;
+					window.location.href = "./debrief.html";
+						
+				}
+			})
+		</script>
+	</head>
+    <body>
+    <div style="text-align:left;margin-left:15%;margin-right:15%;margin-top:5%;font-family:helvetica;font-size:18px;";>
+        <p>
+            <b>Thank you so much for participating in the Fruit Study!</b> <br><br>
+            We would appreciate it if you could fill out the following questions to help us understand how you made your decisions. 
+            All questions are voluntary and you are free to skip any. <br><br>
+
+            1. What features of the fruits helped make your decisions? 
+           <br><br>
+		   <textarea id="postQ1" class="textbox" rows="4"></textarea>
+		   <br><br>
+		   2. Did you find yourself focusing on shape, colour, or size more?
+		   <br><br>
+		   <input type="radio" id="radio1" name="postQ2" value="Shape">&nbsp;&nbsp;Shape<br>
+		   <input type="radio" id="radio2" name="postQ2" value="Colour">&nbsp;&nbsp;Colour<br>
+		   <input type="radio" id="radio3" name="postQ2" value="Size">&nbsp;&nbsp;Size<br>
+		   <br><br>
+		   3. Describe the types of apples, oranges, or grapes you were thinking of while doing this experiment.
+		   <br><br>
+		   <textarea id="postQ3" class="textbox" rows="4"></textarea>
+		   <br><br>
+		   4. What would help make the decisions easier?
+		   <br><br>
+           <textarea id="postQ4" class="textbox" rows="4"></textarea>
+			<div class="next"; style="text-align: center">
+				<button type="button" id="button" style="margin-bottom:15px">NEXT</button><br><br><br>
+            </div>
+        </p>
+	</div>
+	</body>
+</html>

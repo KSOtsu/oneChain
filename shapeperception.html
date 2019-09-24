@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/index.css"/>
+		<style>
+		.nexttext { font-weight: bold; color: #002A5C; }
+		.textbox {width: 35px; padding: 1px;}
+		</style>
+		<script src="js/jquery-1.11.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+		$(function() {
+			document.getElementById("button").onclick = nextButton;
+			function nextButton() {
+				localStorage["shape"] = document.getElementById("text").value
+				window.location.href = "./post-questions.html"
+			}
+		})
+		</script>
+	</head>
+	<body>	
+	<div style="text-align:center;margin-left:15%;margin-right:15%;margin-top:10%;font-family:helvetica;";>
+		<p style="font-size:28px;">
+			Shape Perception
+		</p>
+		<p style="font-size:18px;margin-top:-15px;">
+When faced with a decision-making task, an individual's attention may be anchored to certain salient pieces of information. In order to design decision-making tasks, researchers have to account for certain personal variables that may be related to the information one uses in the decision process. As such, we are interested in learning more about certain factors that may relate to how you, as a decision-maker, process complex information. Specifically, this question was designed to examine whether participants take the time to read the instructions presented to them. To demonstrate that you have followed the instructions, please ignore the task below and type the word "shape" into the text box labeled "other". Then press <span class="nexttext">NEXT</span> to save your responses and continue to the debriefing page.
+<br><br>
+How many <b>triangles</b> are in the image below?</p>
+<img src="./shape.png" id="shape" style="width:80%;height:auto;margin-top:-15px;"/>
+<div style="text-align:left;margin-left:45%">
+<input type="radio" id="radio1" name="shapetask" value="16">&nbsp;&nbsp;16<br>
+<input type="radio" id="radio2" name="shapetask" value="24">&nbsp;&nbsp;24<br>
+<input type="radio" id="radio3" name="shapetask" value="27">&nbsp;&nbsp;27<br>
+<input type="radio" id="radio4" name="shapetask" value="30">&nbsp;&nbsp;30<br>
+<input type="radio" id="radio5" name="shapetask" value="other">&nbsp;&nbsp;Other:
+<input type="text" class="textbox" id="text">
+</div>
+			<div class="next">
+				<button type="button" id="button" style="margin-top:5px" onclick="location.href='./post-questions.html'">NEXT</button>
+			</div>
+			<br><br>
+		</p>
+	</div>
+	</body>
+</html>

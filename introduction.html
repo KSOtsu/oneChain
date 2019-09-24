@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/index.css"/>
+		<style>
+		.nexttext { font-weight: bold; color: #002A5C; }
+		</style>
+		<script>
+		//getUrl = window.location.href.split("c=");
+		//conditionarr = getUrl[1].split("&session");
+		//c = conditionarr[0];
+		//console.log(c)
+		// CL: Added this
+		//localStorage["condition"] = c;
+		//console.log(localStorage["condition"])
+		</script>
+	</head>
+	<body>	
+	<div style="text-align:center;margin-left:15%;margin-right:15%;margin-top:10%;font-family:helvetica;";>
+		<p style="font-size:28px;">
+			Introduction
+		</p>
+		<p style="font-size:18px;margin-top:-15px;">
+		In this experiment, you're going to see a pair of fruits on plates on the screen.
+		<br><br>
+		Your job is to click on which <b>one</b> fruit you think is the apple, orange, or grape.
+		<br><br>
+		Make sure you read each instruction carefully to know which fruit is being asked about.
+		<br><br>
+		If you think both fruits equally match as an apple/orange/grape, please still pick <b>one</b> fruit.
+		<br><br>
+		<i>Please do not use a mobile device for this experiment.</i>
+		<br><br>
+		Click <span class=nexttext>NEXT</span> to continue	
+		</p>
+			<div class="next">
+				<button type="button" id="button" style="margin-top:5px" onclick="location.href='./KO_fruit.html'">NEXT</button>
+			</div>
+		</p>
+	</div>
+	</body>
+</html>

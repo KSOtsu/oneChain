@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/index.css"/>
+		<style>
+		.nexttext { font-weight: bold; color: #002A5C; }
+		.textbox {width:100%;padding:1px;}
+		</style>
+		<script src="js/jquery-1.11.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			$(function(){
+				document.getElementById("button").onclick = nextButton;
+				function nextButton() {
+					var radios = document.getElementsByName("wrongfruit");
+						for (var i = 0, length = radios.length; i < length; i++) {
+							if (radios[i].checked) {
+								q1 = radios[i].value;
+								break;
+							}
+						}
+					var radios = document.getElementsByName("rightfruit");
+						for (var i = 0, length = radios.length; i < length; i++) {
+							if (radios[i].checked) {
+								q2 = radios[i].value;
+								break;
+							}
+						}
+					localStorage["attention1"] = q1;
+					localStorage["attention2"] = q2;
+					window.location.href = "./shapeperception.html";
+						
+				}
+			})
+		</script>
+	</head>
+	<body>	
+	<div style="text-align:center;margin-left:15%;margin-right:15%;margin-top:10%;font-family:helvetica;font-size:18px;";>
+		<p>
+			Were you ever asked to pick the <b>banana</b>?
+			<div class="radio" id="b">
+				<form action="">
+  					<input type="radio" id="w1" name="wrongfruit" value="-1">
+  					Yes
+  					<input type="radio" id="w2" name="wrongfruit" value="1">
+  					No
+					</form>
+					<br><br>
+		</div>
+		Were you ever asked to pick the <b>grape</b>?<br><br>
+			<div class="radio" id="nb">
+				<form action="">
+  					<input type="radio" id="r1" name="rightfruit" value="1">
+  					Yes
+  					<input type="radio" id="r2" name="rightfruit" value="-1">
+  					No
+					</form>
+					<br><br>
+		</div>
+			<div class="next">
+				<button type="button" id="button" style="margin-top:15px">NEXT</button><br><br><br>
+			</div>
+		</p>
+	</div>
+	</body>
+</html>

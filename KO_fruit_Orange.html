@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<!-- jQuery thinks this window height is 0 if this is not declared -->
+<html>
+
+<head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <script src="convex-hull.js"></script>
+    <script src="https://d3js.org/d3-random.v1.min.js"></script>
+    <script src="js/jquery-1.11.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="fruit-classes.js" type="text/javascript" charset="utf-8"></script>
+    <script src="chain-functions.js" type="text/javascript" charset="utf-8"></script>
+
+    <script>
+
+
+        const init_start1 = {
+            h : 47.5724,
+            v : 42.0661,
+            r : 23.2907,
+            hue : 277.66,
+            sat : 58.15,
+            light : 72.32,
+            t : "init1",
+            distribution : "initial"
+        };
+
+        const init_start2 = {
+            h: 47.5755,
+            v: 42.0625,
+            r: 47.5755,
+            hue: 109.74,
+            sat: 70.17,
+            light: 20.57,
+            t: "init2",
+            distribution: "initial"
+        };
+
+        const init_start3 = {
+            h: 23.2907,
+            v: -42.0625,
+            r: 47.5755,
+            hue: 15.38,
+            sat: 77.51,
+            light: 66.54,
+            t: "init3",
+            distribution: "initial"
+        };
+
+        const config = {
+            shuffle_state : "off", //can only be "on" or "off"
+            random_state: "off",
+            random_chain_number: 3, //only required if random_state is on
+            chain_list : [init_start2], //only required if random_state is off
+            fruit_list : ["ORANGE"],
+            max_trials : 667, //for each of the 9 chains which adds to 6003
+            left_h : innerWidth/4,
+            right_h : (innerWidth/4)*3,
+            screen_w: innerWidth,
+            screen_h: innerHeight, // Behaves unexpectedly (height=0) if in Firefox with undeclared doctype or html5 doctype
+            text_x: innerWidth/2,
+            text_instruction_y: innerHeight*0.15,
+            text_fruit_y: innerHeight*0.25,
+            y_value: innerHeight/2,
+            stem_width: 7.0,
+            stem_height: 19,
+            plate_max: 1.3512,
+            inner_plate_max: .95,
+            unishape_prob: 0.10,
+            unicolour_prob: 0.20, //gaussian probability is always remaining proportion of unishape_prob and unicolour_prob
+            sd: 0.07,
+            h_min: 0,
+            h_max: 70.8662,
+            v_min: -122.7438,
+            v_max: 122.7438,
+            r_min: 0,
+            r_max: 106.29915, //1.5times larger than Sanborn
+            hue_min: 0,
+            hue_max: 360,
+            sat_min: 0,
+            sat_max: 100,
+            light_min: 0,
+            light_max: 90
+        };
+
+        //const dataRecorder = new ChunkWsIncremental("wss://somata.inf.ed.ac.uk/chunks/ws",() => {},() => {});
+        const canvas = document.createElement('canvas');
+
+        function start() {
+            document.body.appendChild(canvas);
+            const fruitManager = new FruitManager(config,canvas);
+            
+            function clicked(e) {
+                fruitManager.fruitClick(e);
+            }
+
+            //function backed(e) {
+            //    fruitManager.undoClick(e);
+            //}
+            
+            function keyed(e) {
+                console.log("called keyed on " + e);
+                fruitManager.keyClick(e);
+            }
+
+            if(localStorage["sessionId"] == null) {
+                console.error("No sessionId found. Did this page come from consent.html?");
+                localStorage["sessionId"] = "fallback-sid-" + Math.random().toString(36).substring(2, 15);
+            }
+            
+            const start_timestamp = Date.now();
+            const start_date = Date(start_timestamp);
+
+            fruitManager.present();
+            //fruitManager.sendHeader(dataRecorder);
+            canvas.addEventListener("click", clicked, false); // move to constructor
+            canvas.addEventListener("click", backed, false);
+            document.addEventListener("keydown", keyed); // move to constructor
+
+        }
+
+        
+    </script>
+</head>
+
+<body onload="start()">
+</body>
+
+</html>

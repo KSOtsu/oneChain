@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title></title>
+        <link rel="stylesheet" type="text/css" href="css/index.css"/>
+        <style>
+        .nexttext { font-weight: bold; color: #002a5c; }
+		.greyedout { color: #777777;}
+		.boxed { border: 2px solid black;}
+        </style>
+        <script src="js/jquery-1.11.1.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="chunksIncremental.js"></script>
+        <script type="text/javascript">
+        $(function(){
+            document.getElementById("button").onclick = nextButton;
+            function nextButton() {
+                localStorage["birthyear"] = document.getElementById("birthyear").value;
+                localStorage["ethnicity"] = document.getElementById("ethnicity").value;
+                var checkbox = document.getElementsByName("sex");
+                for (var i = 0, length = checkbox.length; i < length; i++) {
+                    if (checkbox[i].checked) {
+                        sex = checkbox[i].value;
+                        if (sex == "Other"){
+                            localStorage["sex"] = document.getElementById("other").value;
+                            break
+                        }
+                        localStorage["sex"] = sex;
+                        break;
+                    }
+                }
+                localStorage["firstlang"] = document.getElementById("firstlang").value;
+                localStorage["primarylang"] = document.getElementById("primarylang").value;
+                window.location.href = "./introduction.html";
+            }
+		})
+        </script>
+    </head>
+    <body style="background-color:#ccffff">	
+    <div style="margin-left:10%;margin-right:10%;margin-top:25px;margin-bottom:25px;font-family:helvetica;background-color:#ffffff" class="boxed">
+        <p style="text-align:center;margin-top:25px;font-size:28px;">
+        Demographics
+        </p>
+        <p style="float:left;font-size:18px;margin-left:25px;margin-right:25px;margin-top:-15px;">
+        <span class=greyedout>The following questions are completely voluntary. If you do not feel comfortable answering, please move on to the next question:</span>
+        </p>
+        <br><br>
+        <br><br>
+        <div class="number" id="select">
+        <p style= "float:left;font-size:18px;margin-left:25px;margin-right:25px;margin-top:-15px;">
+        1. Please provide your birth year: <input type="number" id="birthyear" min="1959" max="2001" step="1" value="0">
+        </div></p>
+        <br><br>
+        <div class="text" id="select">
+        <p style="float:left;font-size:18px;margin-left:25px;margin-right:25px;margin-top:-15px;">
+        2. How would you classify yourself (eg. Aboriginal, Caucasian, African American, Latin American, Asian, etc.): <input id="ethnicity" type="text">
+        </div></p>
+        <br><br>
+        <div class="checkbox" id="select">
+        <p style="float:left;font-size:18px;margin-left:25px;margin-right:25px;margin-top:-15px;">
+        3. How would you classify your sex:<br><br>
+        <p style="float:left;font-size:18px;margin-left:25px;margin-right:25px;margin-top:-5px;"><input type="radio" name="sex" value="Male">Male<br>
+        <input type="radio" name="sex" value="Female">Female<br>
+        <input type="radio" name="sex" value="Other">Other:<input id="other" type="text"></p><br>
+        </div></p>
+        <br><br>
+        <br><br>
+        <br>
+        <div class="text" id="select">
+        <p style="float:left;font-size:18px;margin-left:25px;margin-right:25px;margin-top:-15px;">
+        4. What is the first language you learned?: <input id="firstlang" type="text">
+        </div></p>
+        <br><br>
+        <div class="text" id="select">
+        <p style="float:left;font-size:18px;margin-left:25px;margin-right:25px;margin-top:-15px;">
+        5. What is your primary language (if different from first language)?: <input id="primarylang" type="text">
+        </div></p>
+        <br><br>
+    <div style="text-align:center;margin-left:15%;margin-right:15%;margin-top:0%;font-family:helvetica;" class="next">
+        <p style="font-size:18px;margin-top:-15px;">
+        <button type="button" id="button" style="margin-top:5px">NEXT</button>
+        </p>
+    </div>
+    </div>
+    </body>
+</html>

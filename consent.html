@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/index.css"/>
+		<style>
+		.nexttext { font-weight: bold; color: #002A5C; }
+		.greyedout { color: #777777;}
+		.boxed { border: 2px solid black;}
+		</style>
+		<script src="chain-functions.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/jquery-1.11.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			//var queryDict = {}
+			//location.search.substr(1).split("&").forEach(function(item) {queryDict[item.split("=")[0]] = item.split("=")[1]})
+			//Returns querystring of URL (after ?...) and splits each between & and adds key/value to queryDict
+			//console.log(JSON.stringify(queryDict)) //Currently empty
+		</script>
+		<script type="text/javascript">
+		var ID = window.prompt("Please input lineageId and parentLineageId:","A_A");
+		if (ID == null || ID == "") {
+			localStorage["lineageId"] = "No ID was given";
+			localStorage["parentLineageId"] = "No ID was given";
+			} else {
+			lin = ID.split("_")
+			localStorage["lineageId"] = lin[0];
+			localStorage["parentLineageId"] = lin[1];
+			}
+		console.log("input was " + ID);
+		console.log("lineageId is " + localStorage["lineageId"]);
+		console.log("parentLineageId is " + localStorage["parentLineageId"])
+		</script>
+		<script type="text/javascript">
+		$(function(){
+			//console.log(window.location.hostname); 
+			localStorage["experimentId"] = "KO_fruit118";
+			document.getElementById("button").onclick = nextButton;
+			document.getElementById("yes").onclick = nextEnable;
+			document.getElementById("no").onclick = nextEnable;
+			const sessionId = "consentscr-sid-" + Math.random().toString(36).substring(2, 15);
+			console.log("sessionId is " + sessionId);
+			localStorage["sessionId"] = sessionId;
+			//TO DO: Make it so you can't click on Next until after it's been fetched
+			continueTrial();
+			
+			function nextButton() {
+				var radios = document.getElementsByName('consent');
+				for (var i = 0, length = radios.length; i < length; i++) {
+					if (radios[i].checked) {
+						selection = i;
+						break;
+					}
+				}
+				console.log(selection)
+				if (selection == 0){
+					window.location.href = "./demographics.html"
+				} else {
+					window.location.href = "./end.html";
+				}
+			};
+
+			function nextEnable() {
+				document.getElementById('button').disabled = false;
+				//Once consent is clicked, next button is disabled 
+			};
+		})
+		</script>
+	</head>
+	<body style="background-color:#ccffff">	
+	<div style="margin-left:10%;margin-right:10%;margin-top:25px;margin-bottom:25px;font-family:helvetica;background-color:#ffffff" class="boxed">
+		<p style="text-align:center;margin-top:25px;font-size:28px;">
+			Research Consent Form
+		</p>
+		<p style="float:left;font-size:18px;margin-left:25px;margin-right:25px;margin-top:-15px;">
+			<span class=greyedout>Principal Investigator: Dr. Daphna Buchsbaum. University of Toronto, 100 St. George Street, M5S 2E5, Telephone: (416) 946-3981. Email: cocodev@psych.utoronto.ca</span>
+			<br><br>
+			This research is being conducted by Dr. Daphna Buchsbaum, a faculty member at the University of Toronto. Dr. Buchsbaum’s lab investigates computational models of human cognition. The study typically takes 15 minutes, and you will be compensated $5 for your time.
+			<br><br>
+			If you agree to take part in the research, you will partake in the main experiment, after which you will fill out a brief on-line questionnaire. The questionnaires will involve reading information and answering questions. All of the information that we obtain during the research will be kept confidential, and not associated with your name in any way. There are no risks to you by participating in this study.
+			<br><br>
+			Your participation in this research is voluntary. You are free to refuse to take part, and you may stop taking part at any time. You are free to discontinue participation in this study at any time with no penalty. If there is any question in the questionnaire that makes you uncomfortable or that you do not want to answer, it is your right to refrain from answering that question.
+			<br><br>
+			Please note that you will not be able to withdraw your data after completing the experiment. This is because all data is completely anonymous and there is no identifying link between your name and the data that we collected.
+			<br><br>
+			If you have any questions about the research, do not hesitate to contact Daphna Buchsbaum (<a href="mailto:cocodev@psych.utoronto.ca" target="_blank">cocodev@psych.utoronto.ca</a>). You may also contact the Office of Research Ethics at <a href="mailto:ethics.review@utoronto.ca" target="_blank">ethics.review@utoronto.ca</a> or 416-946-3273.
+			<br><br>
+			By selecting <b>I consent</b> in the field below, you acknowledge that you are 18 or older, have read this consent form, and agree to take part in the research. Remember, you can drop out at any time and still get compensated for your time.</p>
+			<p style="margin-left:30%">I consent<span style="display:inline-block; width:30%;"></span>I DO NOT consent</p>
+			<div class="radios" id="select">
+				<form action="">
+  					<input type="radio" style="margin-bottom:35px;margin-left:33%;" id="yes" name="consent" value="yes" onclick="">
+  					<span style="display:inline-block; width:30%;"></span>
+  					<input type="radio" id="no" name="consent" value="no" onclick="">
+					</form>
+					<div style="text-align:center">
+						<button type="button" id="button" style="margin-bottom:35px;" disabled="true" onclick="">NEXT</button>
+					</div>
+			</div>
+		</p>
+	</div>
+	</body>
+</html>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="css/index.css" />
+    <style>
+        .nexttext {
+            font-weight: bold;
+            color: #002A5C;
+        }
+
+        .greyedout {
+            color: #777777;
+        }
+
+        .boxed {
+            border: 2px solid black;
+        }
+
+        .textbox {
+            width: 100%;
+            padding: 1px;
+        }
+    </style>
+    <script src="js/jquery-1.11.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="chunksIncremental.js"></script>
+    <script type="text/javascript">
+        //var wso = new WebSocket("wss://somata.inf.ed.ac.uk/chunks/ws");
+        let onmessage = function (unsent,err,mess) {
+            
+            console.log('unsent='+unsent+', err='+err+', webSocket message: ' + JSON.stringify(mess));
+            if (unsent == 0) {
+                document.getElementById("codediv").innerHTML = "The survey is now complete. Thank you for your participation."
+                // Your code is 8" + wsError + "-" + event.data.length 
+                //+ ". Please copy and paste your code into Mechanical Turk to claim credit.";
+            }
+        }
+        const dataRecorder = new ChunkWsIncremental("wss://somata.inf.ed.ac.uk/chunks/ws",onmessage,() => {});
+        const sessionId = localStorage["sessionId"];
+        console.log(sessionId)
+        var sentData = 0;
+        //var wsError = 0; // Keeps track of whether any websocket errors have occurred
+
+        
+
+        //wso.onerror = function (error) {
+        //    console.log('webSocket error detected: ' + JSON.stringify(error));
+        //    wsError = 1;
+        //}
+
+        function emptyChunk() {
+            return {
+                experimentId : localStorage["experimentId"],
+                sessionId: localStorage["sessionId"],
+                lineageId: localStorage["lineageId"],
+                parentLineageId: localStorage["parentLineageId"]
+            }
+        }
+    </script>
+
+
+    <script type="text/javascript">
+
+        $(function () {
+            function isValid(invalid, left, right, alternating, prop_accept, trials){
+                console.log("invalid is " + invalid);
+                let left_rate = left / trials;
+                let right_rate = right / trials;
+                let alternate_rate = alternating / trials;
+                let accept_rate = prop_accept / trials;
+                console.log("Left clicking: " + left_rate);
+                console.log("Right clicking: " + right_rate);
+                console.log("Alternating: " + alternate_rate);
+                console.log("Acceptance rate: " + accept_rate);
+                
+                if (invalid == "true"){
+                    console.log("saved as forceInvalid");
+                    return false;
+                } else {
+                    if (left_rate > 0.90 || right_rate > 0.90 || alternate_rate > 0.90 || accept_rate > 0.42){
+                        return false;
+                    } else {return true}
+                }
+            }
+
+            function nextButton() {
+                localStorage["comments"] = document.getElementById("textbox").value;
+                var currentDate = new Date();
+                localStorage["submit_timestamp"] = Date.now(); // CL: Added; makes it easier to compute things like duration.
+                localStorage["submit_date"] = Date(localStorage["submit_timestamp"]); //Changed to this format to match KO_fruit.html
+                localStorage["timezoneOffset"] = currentDate.getTimezoneOffset().toString();
+                if (sentData == 0) {
+                    document.getElementById("codediv").innerHTML = "Sending data";
+                    let footerChunk = emptyChunk();
+                    footerChunk.chunkType = 'FOOTER';
+                    footerChunk.leftClicks = localStorage["leftClicks"];
+                    footerChunk.rightClicks = localStorage["rightClicks"];
+                    footerChunk.alternating = localStorage["alternating"];
+                    footerChunk.propAccepts = localStorage["propAccepts"];
+                    footerChunk.sessionTrials = localStorage["sessionTrials"];
+                    footerChunk.forceInvalid = localStorage["forceInvalid"];
+                    footerChunk.isValid = isValid(
+                        localStorage["forceInvalid"],localStorage["leftClicks"], localStorage["rightClicks"], localStorage["alternating"], localStorage["propAccepts"], localStorage["sessionTrials"]);
+                    footerChunk.lineageTrials = localStorage["lineageTrials"];
+                    footerChunk.attention1 = localStorage["attention1"];
+                    footerChunk.attention2 = localStorage["attention2"];
+                    footerChunk.shapeQ = localStorage["shape"];
+                    footerChunk.postQ1 = localStorage["postQ1"];
+                    footerChunk.postQ2 = localStorage["postQ2"];
+                    footerChunk.postQ3 = localStorage["postQ3"];
+                    footerChunk.postQ4 = localStorage["postQ4"];
+                    footerChunk.submit_timestamp = localStorage["submit_timestamp"];
+                    footerChunk.submit_date = localStorage["submit_date"];
+                    footerChunk.timezoneOffset = localStorage["timezoneOffset"];
+                    footerChunk.isComplete = true;
+                    dataRecorder.sendChunk(footerChunk);
+                    sentData = 1;
+                }
+                // console.log(dataStr)
+                //$.ajax({
+                //	url: './data.php',
+                //	type: 'post',
+                //	contentType:'application/json',
+                //	data: JSON.stringify(data),
+                //	dataType:'json'
+                //});
+                // Could also wait to see if storage is successful...
+                //window.location.href = "./code.html"
+            };
+            document.getElementById("button").onclick = nextButton;
+        })
+
+        function start(){
+
+            localStorage["forceInvalid"] = false;
+            console.log(localStorage["forceInvalid"]);
+
+            function keyClick(zEvent){
+                if (zEvent.ctrlKey  &&  zEvent.altKey &&  zEvent.keyCode === 8) {
+                console.log("Force invalid");
+                localStorage["forceInvalid"] = true;
+                console.log(localStorage["forceInvalid"]);
+                }
+            }
+
+            document.addEventListener("keydown", keyClick);
+        }
+    </script>
+</head>
+
+<body style="background-color:#ccffff"; onload="start()">
+    <div style="margin-left:10%;margin-right:10%;margin-top:25px;margin-bottom:25px;font-family:helvetica;background-color:#ffffff"
+        class="boxed">
+        <p style="text-align:center;font-size:18px;margin-left:25px;margin-right:25px;margin-top:25px;">
+            <b>Thank you so much for participating in the Fruit Study!</b>
+        </p>
+        <p style="float:left;font-size:18px;margin-left:25px;margin-right:25px;">
+            We really appreciate your time and interest. The study you just participated in was designed to investigate how the concept
+            of categories may change over time. All participants were shown similar fruits and questions, but given your answers to each
+            question we would try to create new choices to better understand what you considered were the best examples for 
+            that fruit category.
+            <br><br> Past research has suggested that children may categorize differently to that of adults, especially young infants. We 
+            hope to use this technology to help visualize the changes of categorization over different ages. 
+            <br><br>
+        </p>
+        <div id="codediv" style="text-align:center;font-size:18px">
+            <p style="text-align:center;font-size:18px;margin-left:25px;margin-right:25px;"><b>Questions or Concerns?</b></p>
+            <p style="float:left;font-size:18px;margin-left:25px;margin-right:25px;">
+                Was anything unclear or confusing about this experiment? Feel free to share any questions or comments you may have in the
+                space below.
+                <br><br>
+                <textarea id="textbox" class="textbox" rows="4"></textarea>
+                <br><br> If you would like to receive a report of this study (or a summary of the findings) when it is completed,
+                feel free to contact Dr. Buchsbaum and her team at (416) 946-3981, or by email at <a href="mailto:cocodev@psych.utoronto.ca"
+                    target="_blank">cocodev@psych.utoronto.ca</a>.
+                <br><br> If you have concerns about this study or your rights as a participant of this experiment, you are
+                encouraged to contact the Office of Research Ethics at <a href="mailto:ethics.review@utoronto.ca" target="_blank">ethics.review@utoronto.ca</a>
+                or (416) 946-3273.
+                <br><br>
+            </p>
+            <p style="text-align:center;font-size:18px;margin-left:25px;margin-right:25px;">
+                Press <span class="nexttext">NEXT</span> to record your responses and finish the survey.
+                <div style="text-align:center">
+                    <button type="button" id="button" style="margin-bottom:35px;" onclick="">NEXT</button>
+                </div>
+            </p>
+        </div>
+    </div>
+</body>
+
+</html>
